@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Calculator
   attr_reader :total
 
-  def initialize()
+  def initialize
     @total = 0
   end
 
