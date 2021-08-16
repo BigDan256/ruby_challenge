@@ -1,7 +1,10 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    cgi (0.2.0)
     diff-lcs (1.4.4)
+    erb (2.2.3)
+      cgi
     json (2.5.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
@@ -35,6 +38,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  erb (~> 2.2)
   json (~> 2.5)
   rspec (~> 3.10)
   sequel (~> 5.47)

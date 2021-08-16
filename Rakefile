@@ -8,7 +8,7 @@ begin
   end
 end
 
-task default: %w[clean test create_db run]
+task default: %w[clean test create_db serve]
 
 task :clean do
   puts 'Cleaning project...\n'
@@ -62,7 +62,7 @@ task :create_db do
   end
 end
 
-task :run do
+task :serve do
   puts "Executing application...\n"
   ruby "app.rb"
 end

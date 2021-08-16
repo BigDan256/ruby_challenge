@@ -15,3 +15,5 @@ gem "sequel", "~> 5.47"
 gem "json", "~> 2.5"
 
 gem "sqlite3", "~> 1.4"
+
+gem "erb", "~> 2.2"
