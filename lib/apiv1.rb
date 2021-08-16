@@ -2,9 +2,10 @@
 
 require_relative './controllers/warehouse'
 
+set :views => File.dirname(__FILE__) + "/views"
+
 get '/api/v1/warehouse/' do
-  controller = Controllers::Warehouse.new
-  controller.index
+  erb :'warehouse/index'
 end
 
 post '/api/v1/warehouse/fulfilment' do

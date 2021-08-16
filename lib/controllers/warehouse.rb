@@ -13,10 +13,6 @@ module Controllers
       @order_items = DB[:order_items]
     end
 
-    def index
-      erb 'warehouse/index'
-    end
-
     def fulfilment(order_ids)
       orders_to_fulfil = @orders.where(orderId: order_ids, status: 'Pending')
 
