@@ -3,29 +3,26 @@
 require 'sequel'
 require 'sinatra'
 
-module Controllers
-  class Warehouse
-    DB = Sequel.sqlite('data/database.db')
+DB = Sequel.sqlite('data/database.db')
 
-    def initialize
-      @products    = DB[:products]
-      @orders      = DB[:orders]
-      @order_items = DB[:order_items]
-    end
+require_relative '../models/order'
+require_relative '../models/warehouse'
 
-    def fulfilment(order_ids)
-      orders_to_fulfil = @orders.where(orderId: order_ids, status: 'Pending')
+get '/api/v1/warehouse/' do
+  erb :'warehouse/index', :locals => {:orders => Models::Order}
+end
 
-      request_counts = Hash.new(0)
-      orders_to_fulfil.each do |order|
-        order_items = @order_items.where(orderId: order['orderId'])
-        order_items.each do |order_item|
-          request_counts[order_item['productId']] += order_item['quantity']
-        end
-      end
+post '/api/v1/warehouse/fulfilment' do
+  halt 400 unless Array == params['orderIds'].class
 
-      print request_counts
+  result    = []
+  warehouse = Models::Warehouse.new
 
-    end
+  # Validate and fulfil input orders
+  params['orderIds'].map do |v|
+    result << v.to_i unless warehouse.fulfil_order v.to_i
   end
+
+  content_type :json
+  result.to_json
 end

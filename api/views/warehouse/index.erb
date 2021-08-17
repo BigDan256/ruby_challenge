@@ -1,82 +1,59 @@
-<a href="products">products</a>
-<a href="orders">orders</a>
-<form method="post" action="fulfilment">
-  <input type="submit" value="No Orders" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1122" />
-  <input type="submit" value="1122" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1123" />
-  <input type="submit" value="1123" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1122" />
-  <input type="hidden" name="order_ids[]" value="1123" />
-  <input type="submit" value="1122,1123" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1124" />
-  <input type="submit" value="1124" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1122" />
-  <input type="hidden" name="order_ids[]" value="1124" />
-  <input type="submit" value="1122,1124" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1123" />
-  <input type="hidden" name="order_ids[]" value="1124" />
-  <input type="submit" value="1123,1124" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1122" />
-  <input type="hidden" name="order_ids[]" value="1123" />
-  <input type="hidden" name="order_ids[]" value="1124" />
-  <input type="submit" value="1122,1123,1124" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1125" />
-  <input type="submit" value="1125" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1122" />
-  <input type="hidden" name="order_ids[]" value="1125" />
-  <input type="submit" value="1122,1125" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1123" />
-  <input type="hidden" name="order_ids[]" value="1125" />
-  <input type="submit" value="1123,1125" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1122" />
-  <input type="hidden" name="order_ids[]" value="1123" />
-  <input type="hidden" name="order_ids[]" value="1125" />
-  <input type="submit" value="1122,1123,1125" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1124" />
-  <input type="hidden" name="order_ids[]" value="1125" />
-  <input type="submit" value="1124,1125" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1122" />
-  <input type="hidden" name="order_ids[]" value="1124" />
-  <input type="hidden" name="order_ids[]" value="1125" />
-  <input type="submit" value="1122,1124,1125" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1123" />
-  <input type="hidden" name="order_ids[]" value="1124" />
-  <input type="hidden" name="order_ids[]" value="1125" />
-  <input type="submit" value="1123,1124,1125" />
-</form>
-<form method="post" action="fulfilment">
-  <input type="hidden" name="order_ids[]" value="1122" />
-  <input type="hidden" name="order_ids[]" value="1123" />
-  <input type="hidden" name="order_ids[]" value="1124" />
-  <input type="hidden" name="order_ids[]" value="1125" />
-  <input type="submit" value="1122,1123,1124,1125" />
-</form>
+<%
+##
+# This view displays a form of orders ready to fulfil
+#
+# Parameters:
+#  :orders - An active query of Orders
+%>
+
+<script type="text/javascript">
+//<![CDATA[
+/*
+$(function() {
+  $(".fulfilment_form").submit(function() {
+    $.ajax("/api/v1/warehouse/fulfilment", {
+      data: $(this),
+      complete: function(jqXHR, textStatus) {
+        console.log(jqXHR);
+        console.log(textStatus);
+      }
+    });
+
+    return true;
+  });
+});
+*/
+//]]>
+</script>
+
+<div class="col-sm-8 col-md-6 col-lg-5 col-xl-4">
+  <h2>Current Orders:</h2>
+  <form method="post" class="fulfilment_form" action="/api/v1/warehouse/fulfilment">
+    <div>
+      <table class="table">
+        <tr>
+          <th>Order Id</th>
+          <th></th>
+        </tr>
+<% orders.each do |order| %>
+        <tr>
+          <td><%= order[:order_id] %></td>
+          <td><%= order[:date_created] %></td>
+          <td><%= order[:status] %></td>
+          <td>
+  <% if 'Pending' == order[:status] then %>
+            <input class="form-check-input" type="checkbox" name="orderIds[]" value="<%= order[:order_id] %>" />
+  <% end %>
+          </td>
+        </tr>
+<% end %>
+      </table>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <input class="btn btn-primary me-md-2" type="submit" value="Process order" />
+      </div>
+    </div>
+  </form>
+  <br />
+
+  <!-- <div id="result" class="bg-info bg-gradient" style="min-height:8em;"></div> -->
+</div>

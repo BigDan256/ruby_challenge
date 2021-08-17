@@ -1,15 +1,18 @@
 # frozen_string_literal: true
 
-require_relative './controllers/warehouse'
+require 'sinatra'
+require 'json'
 
 set :views => File.dirname(__FILE__) + "/views"
 
-get '/api/v1/warehouse/' do
-  erb :'warehouse/index'
+require_relative './controllers/warehouse'
+
+# Default redirect to the warehouse api for demonstration purposes,
+get '/api/v1' do
+  redirect '/api/v1/warehouse/'
 end
 
-post '/api/v1/warehouse/fulfilment' do
-  controller = Controllers::Warehouse.new
-  controller.fulfilment params['order_ids']
+# Default redirect to the warehouse api for demonstration purposes,
+get '/api' do
+  redirect '/api/v1/warehouse/'
 end
-
