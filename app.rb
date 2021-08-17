@@ -2,9 +2,9 @@
 
 require 'sinatra'
 
-require_relative './lib/apiv1'
+require_relative './api/v1'
 
+# Default redirect to the warehouse api for demonstration purposes,
 get '/' do
-  # For demonstration purposes, default redirect to the warehouse api
   redirect '/api/v1/warehouse/'
 end

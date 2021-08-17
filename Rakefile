@@ -24,24 +24,24 @@ task :create_db do
   DB = Sequel.sqlite('data/database.db')
 
   DB.create_table :products do
-    primary_key :productId
+    primary_key :product_id
     String      :description
-    Integer     :quantityOnHand
-    Integer     :reorderThreshold
-    Integer     :reorderAmount
-    Integer     :deliveryLeadTime
+    Integer     :quantity_on_hand
+    Integer     :reorder_threshold
+    Integer     :reorder_amount
+    Integer     :delivery_lead_time
   end
   DB.create_table :orders do
-    primary_key :orderId
+    primary_key :order_id
     String      :status
-    String      :dateCreated
+    String      :date_created
   end
   DB.create_table :order_items do
     primary_key :id
-    Integer     :orderId
-    Integer     :productId
+    Integer     :order_id
+    Integer     :product_id
     Integer     :quantity
-    String      :costPerItem
+    String      :cost_per_item
   end
 
   products    = DB[:products]
@@ -51,14 +51,30 @@ task :create_db do
   data_file = File.read('data.json')
   data_hash = JSON.parse(data_file)
 
-  data_hash["products"].each do |product|
-    products.insert(product)
+  data_hash["products"].each do |v|
+    products.insert({
+      product_id:          v['productId'],
+      description:         v['description'],
+      quantity_on_hand:    v['quantityOnHand'],
+      reorder_threshold:   v['reorderThreshold'],
+      reorder_amount:      v['reorderAmount'],
+      delivery_lead_time:  v['deliveryLeadTime'],
+    })
   end
-  data_hash["orders"].each do |order|
-    order["items"].each do |order_item|
-      order_items.insert(order_item)
+  data_hash["orders"].each do |v1|
+    v1["items"].each do |v2|
+      order_items.insert({
+        order_id:      v2['orderId'],
+        product_id:    v2['productId'],
+        quantity:      v2['quantity'],
+        cost_per_item: v2['costPerItem']
+      })
     end
-    orders.insert(order.except("items"))
+    orders.insert({
+      order_id:     v1['orderId'],
+      status:       v1['status'],
+      date_created: v1['dateCreated']
+    })
   end
 end
 
