@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-begin
-  require 'rspec/core/rake_task'
+require 'json'
+require 'sequel'
+require 'rspec/core/rake_task'
 
-  RSpec::Core::RakeTask.new(:test) do |t|
-    t.fail_on_error = false
-  end
+RSpec::Core::RakeTask.new(:test) do |t|
+  t.fail_on_error = false
 end
 
-task default: %w[clean test create_db serve]
+task default: %w[clean test create_db populate_db serve]
 
 task :clean do
   puts 'Cleaning project...\n'
@@ -16,9 +16,6 @@ task :clean do
 end
 
 task :create_db do
-  require 'json'
-  require 'sequel'
-
   puts "Creating database...\n"
 
   DB = Sequel.sqlite('data/database.db')
@@ -43,6 +40,12 @@ task :create_db do
     Integer     :quantity
     String      :cost_per_item
   end
+end
+
+task :populate_db do
+  puts "Populating database...\n"
+
+  DB = Sequel.sqlite('data/database.db')
 
   products    = DB[:products]
   orders      = DB[:orders]
@@ -51,34 +54,34 @@ task :create_db do
   data_file = File.read('data.json')
   data_hash = JSON.parse(data_file)
 
-  data_hash["products"].each do |v|
+  data_hash['products'].each do |v|
     products.insert({
-      product_id:          v['productId'],
-      description:         v['description'],
-      quantity_on_hand:    v['quantityOnHand'],
-      reorder_threshold:   v['reorderThreshold'],
-      reorder_amount:      v['reorderAmount'],
-      delivery_lead_time:  v['deliveryLeadTime'],
-    })
+                      product_id: v['productId'],
+                      description: v['description'],
+                      quantity_on_hand: v['quantityOnHand'],
+                      reorder_threshold: v['reorderThreshold'],
+                      reorder_amount: v['reorderAmount'],
+                      delivery_lead_time: v['deliveryLeadTime']
+                    })
   end
-  data_hash["orders"].each do |v1|
-    v1["items"].each do |v2|
+  data_hash['orders'].each do |v1|
+    v1['items'].each do |v2|
       order_items.insert({
-        order_id:      v2['orderId'],
-        product_id:    v2['productId'],
-        quantity:      v2['quantity'],
-        cost_per_item: v2['costPerItem']
-      })
+                           order_id: v2['orderId'],
+                           product_id: v2['productId'],
+                           quantity: v2['quantity'],
+                           cost_per_item: v2['costPerItem']
+                         })
     end
     orders.insert({
-      order_id:     v1['orderId'],
-      status:       v1['status'],
-      date_created: v1['dateCreated']
-    })
+                    order_id: v1['orderId'],
+                    status: v1['status'],
+                    date_created: v1['dateCreated']
+                  })
   end
 end
 
 task :serve do
   puts "Executing application...\n"
-  ruby "app.rb"
+  ruby 'app.rb'
 end

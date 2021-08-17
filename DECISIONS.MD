@@ -29,3 +29,12 @@ Added some classes and "namespaced" them how I would expect to do it in yii2, ho
 Undecided on how I will store the database and which extension to use. "sequel" or "activerecord" look good, or maybe just a simple json file like provided will do. Then a rake reset could just copy the example file to a data directory.
 
 Rubocop is complaining about commenting, and I'm ready to add some unit tests. The describe POST functionality should then just be a matter of connecting dots.
+
+2021-08-18
+----------
+
+Free time was difficult over the week, but plenty of time to rethink the issues I ran into working with Ruby. Re-reading the requirements, I realised I may have jumped too deep into structure. It all could just fit in a single sinatra route.
+
+I dropped the extra APPV1 namespace layer but kept the Controllers/Models namespaces. Relocated the business logic to a warehouse model rather than the controller. Re-instated the database models but still dropped the form model.
+
+Pretty happy with the new code, although I'm still struggling with a few concepts of Ruby, they should iron out with use. TDD didn't happen, although I will be adding tests in the next pass.

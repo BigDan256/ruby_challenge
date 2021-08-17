@@ -9,7 +9,7 @@ require_relative '../models/order'
 require_relative '../models/warehouse'
 
 get '/api/v1/warehouse/' do
-  erb :'warehouse/index', :locals => {:orders => Models::Order}
+  erb :'warehouse/index', { locals: { orders: Models::Order } }
 end
 
 post '/api/v1/warehouse/fulfilment' do

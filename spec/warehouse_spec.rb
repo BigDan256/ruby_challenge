@@ -7,8 +7,8 @@ RSpec.describe APIV1::Controllers::Warehouse do
     @warehouse = new APIV1::Controllers::Warehouse
   end
 
-  context ".fulfilment" do
-    it "responds to fulfilment" do
+  context '.fulfilment' do
+    it 'responds to fulfilment' do
       expect(@warehouse).to respond_to(:fulfilment)
     end
   end

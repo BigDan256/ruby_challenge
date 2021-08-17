@@ -4,7 +4,10 @@ Ruby challenge is a proof of knowledge assessment.
 
 ## Application Gems
 
-* [Sinatra](https://github.com/sinatra/sinatra) for HTTP routing
+* [ERB](https://github.com/ruby/erb) - templating
+* [JSON implementation for Ruby](https://github.com/flori/json) - sample data
+* [Sequel: The Database Toolkit for Ruby](https://github.com/jeremyevans/sequel) - database handling
+* [Sinatra](https://github.com/sinatra/sinatra) - HTTP routing
 
 ## Testing Gems
 
@@ -18,20 +21,15 @@ Ruby challenge is a proof of knowledge assessment.
   bundle install
   ```
 
-2. Run tests
+2. Run the application
 
   ```bash
-  rspec
+  rake
   ```
 
-3. Run app
-  ```bash
-  ruby app.rb
-  ```
-
-4. If there was an error, install a gem such as puma and try again
+3. If there was an error, install a gem such as puma and try again
   ```bash
   gem install puma
   ```
 
-5. Open your browser to the recommended address, eg: http://localhost:4567/
+4. Open your browser to the recommended address, eg: http://localhost:4567/

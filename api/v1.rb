@@ -3,7 +3,7 @@
 require 'sinatra'
 require 'json'
 
-set :views => File.dirname(__FILE__) + "/views"
+set :views => File.dirname(__FILE__) << '/views'
 
 require_relative './controllers/warehouse'
 
