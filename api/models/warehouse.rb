@@ -25,27 +25,12 @@ module Models
 
       return false unless order.instance_of?(Models::Order)
       return false unless order[:status] == 'Pending'
+      return false unless order.on_hand?
 
       result = false
       DB.transaction do
         DB.after_commit { result = true }
-
-        order.items.each do |item|
-          product = item.product
-
-          raise Sequel::Rollback if item.quantity > product.quantity_on_hand
-
-          if product.quantity_on_hand - item.quantity <= product.reorder_threshold
-            if product.reorder_threshold <= product.quantity_on_hand
-              purchase_product product.pk
-            end
-          end
-
-          product[:quantity_on_hand] -= item[:quantity]
-          product.save
-        end
-
-        order[:status] = 'Fulfilled'
+        order.fulfil
         order.save
       end
 

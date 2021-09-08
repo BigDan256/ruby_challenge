@@ -26,19 +26,23 @@ $(function() {
 //]]>
 </script>
 
-<div class="col-sm-8 col-md-6 col-lg-5 col-xl-4">
+<div>
   <h2>Current Orders:</h2>
   <form method="post" class="fulfilment_form" action="/api/v1/warehouse/fulfilment">
     <div>
       <table class="table">
         <tr>
           <th>Order Id</th>
-          <th></th>
+          <th>Date</th>
+          <th>Availability</th>
+          <th>Status</th>
+          <th>Process</th>
         </tr>
 <% orders.each do |order| %>
         <tr>
           <td><%= order[:order_id] %></td>
           <td><%= order[:date_created] %></td>
+          <td><%= order.on_hand? ? 'Order' : 'Backorder' %></td>
           <td><%= order[:status] %></td>
           <td>
   <% if 'Pending' == order[:status] then %>
